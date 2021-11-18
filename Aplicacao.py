@@ -2,14 +2,14 @@ import sqlite3
 from _ast import Import
 from tkinter import *
 
-import Imagens
-
+from Imagens import Imagens
 from NovoUsuario import NovoUsuario
 from UsuariosDB import UsuariosDB
 
 
 class Application:
     def __init__(self, master=None):
+        self.root = master
         self.fontePadrao = ("Arial", "10")
         self.primeiroContainer = Frame(master)
         self.primeiroContainer["pady"] = 10
@@ -78,7 +78,8 @@ class Application:
 
         if usuarioDb.validarUsuarioSenha(usuario, senha):
             self.mensagem["text"] = "Autenticado"
-            Imagens
+            self.root.destroy()
+            Imagens()
         else:
             self.mensagem["text"] = "Erro na autenticação"
 

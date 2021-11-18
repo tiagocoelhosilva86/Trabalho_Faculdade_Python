@@ -1,72 +1,47 @@
 from tkinter import *
-
-from PIL.Image import ImageTransformHandler
+from PIL import ImageTk, Image
 
 
 class Imagens:
-    def __init__(self):
+    def __init__(self, master=None):
         self.root = Tk()
         self.root.title('Album de Fotos')
-        self.root.iconbitmap('imagens/Img1.jpg')
 
-        self.imagens1 = ImageTransformHandler.PhotoImagen(Image.open('imagens/Img1.jpg'))
-        self.imagens2 = ImageTK.PhotoImagen(Image.open('imagens/Img2.jpg'))
-        self.imagens3 = ImageTK.PhotoImagen(Image.open('imagens/Img3.jpg'))
-        self.imagens4 = ImageTK.PhotoImagen(Image.open('imagens/Img4.jpg'))
-        self.imagens5 = ImageTK.PhotoImagen(Image.open('imagens/Img5.jpg'))
-        self.imagens6 = ImageTK.PhotoImagen(Image.open('imagens/Img6.jpg'))
+        self.canvas = Canvas(self.root, width=800, height=600)
+        self.canvas.pack()
 
-        self.imagens = [imagens1,imagens2,imagens3,imagens4,imagens5,imagens6]
+        # self.imagens1 = ImageTk.PhotoImage(Image.open("Img2.jpg"))  # PIL solution
+        img1 = Image.open("imagens/Img1.jpg")
+        img1 = img1.resize((200, 200), Image.ANTIALIAS)
 
-        # imagens = Label(imagens=imagens1)
-        self.imagens.grid(row=0,columm=0,columnspan=3)
+        img2 = Image.open("imagens/Img2.jpg")
+        img2 = img2.resize((200, 200), Image.ANTIALIAS)
 
-        self.button_votar = Button(self.root, text="<<", command=self.back, state=DISABLED)
-        self.button_exit = Button(self.root, text="Sair do programa", command=self.root.quit)
-        self.button_proximo = Button(self.root, text=">>", command=lambda: self.forward(2))
+        img3 = Image.open("imagens/Img3.jpg")
+        img3 = img3.resize((200, 200), Image.ANTIALIAS)
 
-        self.button_votar.grid(row=1, column=0)
-        self.button_exit.grid(row=1, column=1)
-        self.button_proximo.grid(row=1, column=2)
+        img4 = Image.open("imagens/Img4.jpg")
+        img4 = img4.resize((200, 200), Image.ANTIALIAS)
+
+        img5 = Image.open("imagens/Img5.jpg")
+        img5 = img5.resize((200, 200), Image.ANTIALIAS)
+
+        img6 = Image.open("imagens/Img6.jpg")
+        img6 = img6.resize((200, 200), Image.ANTIALIAS)
+
+        self.imagens1 = ImageTk.PhotoImage(img1)
+        self.imagens2 = ImageTk.PhotoImage(img2)
+        self.imagens3 = ImageTk.PhotoImage(img3)
+        self.imagens4 = ImageTk.PhotoImage(img4)
+        self.imagens5 = ImageTk.PhotoImage(img5)
+        self.imagens6 = ImageTk.PhotoImage(img6)
+
+        # self.l= Label(image=self.imagens1)
+        self.canvas.create_image(20, 20, anchor=NW, image=self.imagens1)
+        self.canvas.create_image(242, 20, anchor=NW, image=self.imagens2)
+        self.canvas.create_image(464, 20, anchor=NW, image=self.imagens3)
+        self.canvas.create_image(20, 290, anchor=NW, image=self.imagens4)
+        self.canvas.create_image(242, 290, anchor=NW, image=self.imagens5)
+        self.canvas.create_image(464, 290, anchor=NW, image=self.imagens6)
 
         self.root.mainloop()
-
-    def forward(imagens_number):
-        global  imagens
-        global  button_voltar
-        global  button_proximo
-
-        my_label.grid_forget()
-        my_label = Label(imagens = imagens_list[imagens_number-1])
-        button_proximo = Button(root,text=">>",command=lambda:forward(imagens_number+1))
-        button_voltar = Button(root,text="<<",command=lambda :back(imagens_number-1))
-
-        if imagens_number == 5:
-            button_proximo = Button(root,text=">>",state=DISABLED)
-
-
-        my_label.grid(row=0,column=0,columnspan=3)
-        button_voltar.grid(row=1,column=0)
-        button_proximo.grid(row=1, column=2)
-
-    def back(imagens_number):
-        global my_label
-        global button_votar
-        global button_proximo
-
-        my_label.grid_forget()
-        my_label = Label(imagens=imagens_list[imagens_number - 1])
-        button_proximo = Button(root, text=">>", command=lambda: forward(imagens_number + 1))
-        button_voltar = Button(root, text="<<", command=lambda: back(imagens_number - 1))
-
-        if imagens_number == 1:
-            button_votar = Button(root,text="<<",state=DISABLED)
-
-        my_label.grid(row=0, column=0, columnspan=3)
-        button_voltar.grid(row=1, column=0)
-        button_proximo.grid(row=1, column=2)
-
-
-
-
-
