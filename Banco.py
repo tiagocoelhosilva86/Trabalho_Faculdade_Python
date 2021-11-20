@@ -20,5 +20,11 @@ class Banco():
                      usuario text,
                      senha text)""")
 
+                     
+        c.execute("""create table if not exists usuario_imagens (
+                     idimagem integer primary key autoincrement ,
+                     idusuario integer,
+                     caminho text)""")
+
         self.conexao.commit()
         c.close()

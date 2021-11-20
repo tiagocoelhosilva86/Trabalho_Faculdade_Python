@@ -3,7 +3,7 @@ from Banco import Banco
 
 class UsuariosDB(object):
 
-    def __init__(self,idusuario = 0, nome="", cpf="", email="", usuario="", senha=""):
+    def __init__(self, idusuario=0, nome="", cpf="", email="", usuario="", senha=""):
         self.info = {}
         self.idusuario = idusuario
         self.nome = nome
@@ -11,6 +11,7 @@ class UsuariosDB(object):
         self.email = email
         self.usuario = usuario
         self.senha = senha
+        self.imagens = []
 
     def insertUser(self):
 
@@ -57,7 +58,8 @@ class UsuariosDB(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("delete from usuarios where idusuario = " + self.idusuario + " ")
+            c.execute("delete from usuarios where idusuario = " +
+                      self.idusuario + " ")
 
             banco.conexao.commit()
             c.close()
@@ -72,7 +74,8 @@ class UsuariosDB(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("select * from usuarios where idusuario = " + idusuario + "  ")
+            c.execute("select * from usuarios where idusuario = " +
+                      idusuario + "  ")
 
             for linha in c:
                 self.idusuario = linha[0]
@@ -94,7 +97,8 @@ class UsuariosDB(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("select * from usuarios where usuario = '" + usuario + "' and senha =  '"+senha+"' ")
+            c.execute("select * from usuarios where usuario = '" +
+                      usuario + "' and senha =  '"+senha+"' ")
 
             for linha in c:
                 self.idusuario = linha[0]
@@ -108,4 +112,41 @@ class UsuariosDB(object):
 
             return self.idusuario != 0
         except:
+            return False
+
+    def carregarImagens(self):
+        banco = Banco()
+
+        try:
+
+            c = banco.conexao.cursor()
+
+            c.execute(
+                "select * from usuario_imagens where idusuario = " + str(self.idusuario))
+
+            for linha in c:
+                self.imagens.append([linha[0], linha[1], linha[2]])
+            
+            return self.imagens
+
+        except Exception as e: 
+            print(e)
+            return self.imagens
+
+    def salvarImagem(self, nome, caminho):
+        banco = Banco()
+
+        try:
+
+            c = banco.conexao.cursor()
+
+            c.execute("insert into usuario_imagens (idusuario, caminho) values (" +
+                      str(self.idusuario) +", '"+ caminho +"' ) " )
+
+            banco.conexao.commit()
+            c.close()
+
+            return True
+        except Exception as e: 
+            print(e)
             return False

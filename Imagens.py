@@ -1,47 +1,70 @@
 from tkinter import *
+from tkinter import filedialog as fd
 from PIL import ImageTk, Image
 
 
 class Imagens:
-    def __init__(self, master=None):
+    def __init__(self, usuarioDb):
+        self.nome = ''
+        self.caminho = ''
+        self.usuario = usuarioDb
         self.root = Tk()
         self.root.title('Album de Fotos')
 
-        self.canvas = Canvas(self.root, width=800, height=600)
+        self.primeiroContainer = Frame(self.root)
+        self.primeiroContainer["pady"] = 10
+        self.primeiroContainer.pack()
+
+        self.segundoContainer = Frame(self.root)
+        self.segundoContainer["padx"] = 10
+        self.segundoContainer.pack()
+
+        self.canvas = Canvas(self.segundoContainer, width=800, height=600)
         self.canvas.pack()
 
-        # self.imagens1 = ImageTk.PhotoImage(Image.open("Img2.jpg"))  # PIL solution
-        img1 = Image.open("imagens/Img1.jpg")
-        img1 = img1.resize((200, 200), Image.ANTIALIAS)
+        self.botao = Button(self.primeiroContainer,
+                            text="Selecione", command=self.salvarImagem)
+        self.botao.pack(side=LEFT)
 
-        img2 = Image.open("imagens/Img2.jpg")
-        img2 = img2.resize((200, 200), Image.ANTIALIAS)
-
-        img3 = Image.open("imagens/Img3.jpg")
-        img3 = img3.resize((200, 200), Image.ANTIALIAS)
-
-        img4 = Image.open("imagens/Img4.jpg")
-        img4 = img4.resize((200, 200), Image.ANTIALIAS)
-
-        img5 = Image.open("imagens/Img5.jpg")
-        img5 = img5.resize((200, 200), Image.ANTIALIAS)
-
-        img6 = Image.open("imagens/Img6.jpg")
-        img6 = img6.resize((200, 200), Image.ANTIALIAS)
-
-        self.imagens1 = ImageTk.PhotoImage(img1)
-        self.imagens2 = ImageTk.PhotoImage(img2)
-        self.imagens3 = ImageTk.PhotoImage(img3)
-        self.imagens4 = ImageTk.PhotoImage(img4)
-        self.imagens5 = ImageTk.PhotoImage(img5)
-        self.imagens6 = ImageTk.PhotoImage(img6)
-
-        # self.l= Label(image=self.imagens1)
-        self.canvas.create_image(20, 20, anchor=NW, image=self.imagens1)
-        self.canvas.create_image(242, 20, anchor=NW, image=self.imagens2)
-        self.canvas.create_image(464, 20, anchor=NW, image=self.imagens3)
-        self.canvas.create_image(20, 290, anchor=NW, image=self.imagens4)
-        self.canvas.create_image(242, 290, anchor=NW, image=self.imagens5)
-        self.canvas.create_image(464, 290, anchor=NW, image=self.imagens6)
+        self.carregarImagens()
 
         self.root.mainloop()
+
+    def salvarImagem(self):
+        filetypes = [('imagens', '.jpg')]
+
+        caminho = fd.askopenfilename(
+            title='Open a file', initialdir='/', filetypes=filetypes)
+
+        self.usuario.salvarImagem('', caminho)
+
+        self.carregarImagens()
+
+    def carregarImagens(self):
+
+        count = 0
+        posx = 1
+        posy = 5
+        for imagem in self.usuario.carregarImagens():
+
+            img1 = Image.open(imagem[2])
+            img1 = img1.resize((200, 200), Image.ANTIALIAS)
+
+            photoImage = ImageTk.PhotoImage(img1)
+
+            self.canvas.create_image(posy, posx, anchor=NW, image=photoImage)
+            count = count + 1
+            if count == 9:
+                break
+
+            if count == 0 or count == 3 or count == 6:
+                posy = 5
+            elif count == 1 or count == 4 or count == 7:
+                posy = 210
+            elif count == 2 or count == 5 or count == 8:
+                posy = 415
+
+            if count > 2 and count < 5:
+                posx = 205
+            elif count > 5 and count < 8:
+                posx = 410

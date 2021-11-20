@@ -1,5 +1,3 @@
-import sqlite3
-from _ast import Import
 from tkinter import *
 
 from Imagens import Imagens
@@ -79,7 +77,7 @@ class Application:
         if usuarioDb.validarUsuarioSenha(usuario, senha):
             self.mensagem["text"] = "Autenticado"
             self.root.destroy()
-            Imagens()
+            Imagens(usuarioDb)
         else:
             self.mensagem["text"] = "Erro na autenticação"
 
