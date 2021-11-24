@@ -1,5 +1,5 @@
 from tkinter import *
-
+import os
 from Imagens import Imagens
 from NovoUsuario import NovoUsuario
 from UsuariosDB import UsuariosDB
@@ -63,6 +63,7 @@ class Application:
         self.novoUsuario["width"] = 12
         self.novoUsuario["command"] = self.criarNovoUsuario
         self.novoUsuario.pack()
+        
 
         self.mensagem = Label(self.quartoContainer, text="", font=self.fontePadrao)
         self.mensagem.pack()

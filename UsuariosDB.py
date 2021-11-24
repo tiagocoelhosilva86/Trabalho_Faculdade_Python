@@ -124,14 +124,15 @@ class UsuariosDB(object):
             c.execute(
                 "select * from usuario_imagens where idusuario = " + str(self.idusuario))
 
+            imagens = []
             for linha in c:
-                self.imagens.append([linha[0], linha[1], linha[2]])
+                imagens.append([linha[0], linha[1], linha[2]])
             
-            return self.imagens
+            return imagens
 
         except Exception as e: 
             print(e)
-            return self.imagens
+            return []
 
     def salvarImagem(self, nome, caminho):
         banco = Banco()
